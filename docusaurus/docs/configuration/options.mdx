@@ -1,0 +1,114 @@
+---
+title: Configuration
+description: All environment variables and configuration options.
+---
+
+## Environment variables
+
+Clean is configured entirely through environment variables. The `.env.example` file shows all available options.
+
+### Required
+
+| Variable | Description |
+|----------|-------------|
+| `CLEAN_API_KEY` | API key for Bearer token authentication. Required in production. |
+| `CLEAN_LICENSE_KEY` | JWT license key. Required in production builds. |
+| `CLEAN_ORG_TOKEN` | Organization token for gateway connection. Required in production. |
+
+### Server
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `CLEAN_API_HOST` | `0.0.0.0` | Host to bind the HTTP server |
+| `CLEAN_API_PORT` | `8000` | Port for the HTTP server |
+| `CLEAN_RATE_LIMIT` | `60` | Requests per minute per IP. Set to `0` in dev mode to disable. |
+
+### Storage
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `CLEAN_PERSIST_PATH` | `~/.clean/index` | Directory for LanceDB vector tables |
+| `CLEAN_REPOS_DIR` | `~/.clean/repos` | Directory for cloned repositories |
+| `CLEAN_DB_PATH` | `~/.clean/metadata.db` | Path to SQLite metadata database |
+
+### Embedding
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `CLEAN_EMBEDDING_MODEL` | `all-MiniLM-L6-v2` | Sentence-transformer model name |
+| `CLEAN_EMBEDDING_DIMENSIONS` | `384` | Embedding vector dimensions (must match model) |
+
+### Search
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `CLEAN_DEFAULT_TOP_K` | `5` | Default number of search results |
+| `CLEAN_DEFAULT_DEPTH` | `1` | Default call graph expansion depth |
+
+### Indexer
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `CLEAN_SKIP_DIRS` | See below | Comma-separated directories to skip during indexing |
+| `CLEAN_BATCH_SIZE` | `5000` | Entities per embedding batch |
+
+Default skip directories: `node_modules`, `.git`, `__pycache__`, `.venv`, `venv`, `.env`, `dist`, `build`, `.next`, `.nuxt`, `coverage`, `.pytest_cache`, `.mypy_cache`, `.tox`, `egg-info`, `.eggs`
+
+### GitHub App
+
+| Variable | Description |
+|----------|-------------|
+| `GITHUB_APP_ID` | GitHub App ID |
+| `GITHUB_PRIVATE_KEY_PATH` | Path to the `.pem` private key file |
+| `GITHUB_WEBHOOK_SECRET` | Webhook signature verification secret |
+
+### Debug
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `CLEAN_DEBUG` | `false` | Enable debug logging |
+| `CLEAN_VERBOSE` | `false` | Enable verbose output |
+
+## Configuration dataclasses
+
+Internally, Clean uses a hierarchy of dataclasses for configuration. All are initialized from environment variables via `CleanConfig.from_env()`.
+
+```python
+CleanConfig
+  ├── ParserConfig       # Extension-to-language mappings
+  ├── IndexerConfig      # Skip dirs, batch size
+  ├── EmbedderConfig     # Model name, dimensions
+  ├── StorageConfig      # LanceDB persist path
+  ├── SearchConfig       # Default top_k, depth
+  ├── ToonFormatterConfig # Output formatting
+  ├── GitHubConfig       # App ID, private key, webhook secret
+  ├── GatewayConfig      # Org token, gateway URL
+  └── ApiConfig          # Host, port, API key, rate limit
+```
+
+## Dev mode
+
+Dev mode is a **build-time** setting, not a runtime environment variable. It disables license validation, API key authentication, and gateway requirements.
+
+To build a dev image:
+
+```bash
+docker build --build-arg CLEAN_BUILD_MODE=dev -t clean:dev .
+```
+
+For local Python development, `make dev` handles this automatically.
+
+:::warning
+Dev builds skip all security controls. Never deploy a dev build to production.
+:::
+
+## Rate limiting
+
+Clean uses an in-memory sliding window rate limiter:
+
+- **Per IP**: `CLEAN_RATE_LIMIT` requests per minute (default: 60)
+- **Per API key**: 2x the per-IP limit (default: 120 rpm)
+- In dev builds, set `CLEAN_RATE_LIMIT=0` to disable rate limiting entirely
+- In production, the minimum is enforced at 1 rpm (cannot be disabled)
+
+Rate-limited requests receive a `429` response with a `Retry-After: 60` header.
