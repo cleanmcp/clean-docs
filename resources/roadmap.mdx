@@ -1,0 +1,60 @@
+---
+title: "Roadmap"
+description: "What's shipped, what's next, and what's planned for 2026."
+---
+
+## What's shipped
+
+Clean 1.0 is live with a complete semantic code search engine:
+
+- **Semantic search** — natural language queries against embedded code using `all-MiniLM-L6-v2`
+- **Call graph context** — callers, callees, and same-file functions returned with every search
+- **TOON output format** — 30-40% token savings vs JSON on every query
+- **Incremental indexing** — git-based change detection, only re-embeds modified files
+- **MCP server** — stdio and SSE transports for direct agent integration
+- **HTTP API** — FastAPI server with Bearer auth, rate limiting, and background jobs
+- **GitHub App** — webhook-based automatic indexing on push events
+- **Python, JavaScript, TypeScript** — tree-sitter parsing for all three languages
+- **Self-hosted** — runs on your infrastructure, data never leaves your machine
+
+## Q1 2026
+
+<Note>
+  Features listed below are in active development and subject to change.
+</Note>
+
+### Branch-aware indexing
+
+Index multiple branches of the same repository with independent search indexes. Currently Clean indexes a single branch per repo — this upgrade allows searching across `main`, `dev`, feature branches, and more.
+
+### Multi-signal relevance scoring
+
+Combine vector similarity with additional signals — recency, code popularity, and usage feedback — for more relevant search results.
+
+### Additional language support
+
+Adding tree-sitter parsers for Go, Rust, and Java. The parser architecture is modular — each language is a standalone module with its own tree-sitter grammar.
+
+## Q2 2026
+
+### SOC 2 compliance
+
+Enterprise security certification for organizations with compliance requirements.
+
+### Token optimization v2
+
+Advanced strategies to further reduce token consumption: smarter code truncation, adaptive context depth, and result deduplication.
+
+## Q3-Q4 2026
+
+### Context sharing
+
+Architecture for sharing search context and code knowledge across multiple agents working on the same codebase. This is a research-stage initiative — design work is underway.
+
+### Agent-to-agent communication
+
+Protocol for agents to share discoveries, avoiding redundant searches when multiple agents work in the same repository.
+
+---
+
+Have feedback on priorities? Reach out at [feedback@tryclean.com](mailto:feedback@tryclean.com).

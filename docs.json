@@ -1,0 +1,125 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Clean",
+  "description": "Persistent codebase memory for AI coding agents — semantic code search with context expansion.",
+  "colors": {
+    "primary": "#6366F1",
+    "light": "#818CF8",
+    "dark": "#4F46E5"
+  },
+  "fonts": {
+    "family": "Roboto Mono"
+  },
+  "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg",
+    "href": "https://useclean.dev"
+  },
+  "navbar": {
+    "links": [
+      {
+        "type": "github",
+        "href": "https://github.com/useclean"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Get Started",
+      "href": "/getting-started/quickstart"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting started",
+            "pages": [
+              "index",
+              "getting-started/quickstart",
+              "getting-started/installation"
+            ]
+          },
+          {
+            "group": "Core concepts",
+            "pages": [
+              "concepts/how-it-works",
+              "concepts/semantic-search",
+              "concepts/toon-format"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/connect-agent",
+              "guides/self-hosting",
+              "guides/github-integration"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "configuration/options",
+              "configuration/supported-agents"
+            ]
+          },
+          {
+            "group": "Resources",
+            "pages": [
+              "resources/roadmap",
+              "resources/faq",
+              "resources/contributing"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api-reference/overview"
+            ]
+          },
+          {
+            "group": "REST endpoints",
+            "pages": [
+              "api-reference/search",
+              "api-reference/index-repo",
+              "api-reference/list-repos",
+              "api-reference/repo-status"
+            ]
+          },
+          {
+            "group": "MCP tools",
+            "pages": [
+              "api-reference/mcp-tools"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "GitHub",
+          "href": "https://github.com/useclean",
+          "icon": "github"
+        }
+      ]
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/useclean",
+      "x": "https://x.com/usecleandev"
+    }
+  },
+  "contextual": {
+    "options": ["copy", "view", "claude", "cursor"]
+  }
+}

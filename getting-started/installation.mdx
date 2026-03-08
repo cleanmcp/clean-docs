@@ -1,0 +1,109 @@
+---
+title: "Installation"
+description: "Install and run Clean on your machine."
+---
+
+## System requirements
+
+| Requirement | Minimum |
+|-------------|---------|
+| Python | 3.10 - 3.13 |
+| Git | Any recent version |
+| OS | macOS, Linux, Windows (WSL2) |
+| RAM | 2GB+ (embedding model uses ~500MB) |
+
+## Docker (recommended)
+
+The simplest way to run Clean. The Docker image pre-caches the embedding model so startup is fast.
+
+```bash
+git clone https://github.com/useclean/Clean.git
+cd Clean
+
+cp .env.example .env
+# Edit .env — set CLEAN_API_KEY and CLEAN_LICENSE_KEY
+```
+
+<Tabs>
+  <Tab title="Production">
+    ```bash
+    docker compose up -d
+    ```
+
+    Requires `CLEAN_LICENSE_KEY` and `CLEAN_ORG_TOKEN` in your `.env`. Data persists in a Docker volume at `/data/clean`.
+  </Tab>
+  <Tab title="Development">
+    ```bash
+    docker compose -f docker-compose.dev.yml up -d
+    ```
+
+    Built with `CLEAN_BUILD_MODE=dev` (no license needed), mounts `./src` for hot reload. The dev compose file passes `--build-arg CLEAN_BUILD_MODE=dev` at build time.
+  </Tab>
+</Tabs>
+
+The API is available at `http://localhost:8000`.
+
+## Local Python
+
+For development or if you prefer not to use Docker.
+
+<Tabs>
+  <Tab title="macOS / Linux">
+    ```bash
+    git clone https://github.com/useclean/Clean.git
+    cd Clean
+    make setup    # Creates venv, installs deps, generates .env
+    make dev      # Starts server on localhost:8000
+    ```
+  </Tab>
+  <Tab title="Windows">
+    ```powershell
+    git clone https://github.com/useclean/Clean.git
+    cd Clean
+    python scripts/dev-setup.py   # Installs make if needed, sets up venv
+    make dev
+    ```
+
+    The setup script detects missing tools (like `make`) and walks you through installing them via winget, choco, or scoop.
+  </Tab>
+</Tabs>
+
+## pip install
+
+For use as a library or the standalone MCP server:
+
+```bash
+pip install clean              # Core + MCP server (stdio)
+pip install "clean[api]"       # Adds FastAPI HTTP server
+pip install "clean[dev,api]"   # Adds test/lint tools
+```
+
+Entry points:
+
+| Command | What it runs |
+|---------|-------------|
+| `clean` | MCP server (stdio transport) — for direct agent integration |
+| `clean-api` | FastAPI HTTP server on port 8000 |
+
+## Verify installation
+
+```bash
+# Health check
+curl http://localhost:8000/
+
+# Should return:
+# {"status": "ok", "service": "clean", "version": "1.0.0"}
+```
+
+## Data directories
+
+Clean stores data in `~/.clean/` by default:
+
+| Path | Contents | Override |
+|------|----------|---------|
+| `~/.clean/index/` | LanceDB vector tables | `CLEAN_PERSIST_PATH` |
+| `~/.clean/repos/` | Cloned repositories | `CLEAN_REPOS_DIR` |
+| `~/.clean/metadata.db` | SQLite (projects, jobs, keys) | `CLEAN_DB_PATH` |
+| `~/.clean/stats.json` | Token savings statistics | — |
+
+In Docker, these are mapped to `/data/clean/`.

@@ -1,0 +1,68 @@
+---
+title: "Search code"
+description: "GET /search — semantic code search with call graph context."
+---
+
+## Endpoint
+
+```
+GET /search
+```
+
+## Authentication
+
+Requires Bearer token with `search` scope.
+
+## Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `q` | string | Yes | — | Natural language search query (1-1000 chars) |
+| `repo` | string | Yes | — | Repository in `owner/repo` format |
+| `top_k` | integer | No | `5` | Number of results (1-50) |
+| `depth` | integer | No | `1` | Call graph expansion depth (0-5) |
+
+## Example request
+
+```bash
+curl "http://localhost:8000/search?q=authentication+logic&repo=owner/repo&top_k=5&depth=1" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Response
+
+```json
+{
+  "results": "results\n  name | file | line | sim\n  login | src/auth/handler.py | 42 | 95%\n  authenticate | src/auth/middleware.py | 18 | 89%\n\ncontext\n  function: login() in src/auth/handler.py:42-67\n\n  callees:\n    validate_credentials | src/auth/validator.py | 12\n    create_session | src/auth/session.py | 28\n\n  callers:\n    handle_login_route | src/routes/auth.py | 15",
+  "result_count": 2,
+  "token_savings": {
+    "chars_saved": 1247,
+    "percent_saved": 34.92
+  }
+}
+```
+
+### Response fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `results` | string | Search results in TOON format |
+| `result_count` | integer | Number of matching entities |
+| `token_savings.chars_saved` | integer | Characters saved vs JSON output |
+| `token_savings.percent_saved` | float | Percentage reduction |
+
+## Behavior
+
+1. **Resolves the repository** — looks up the project by `owner/repo` in metadata
+2. **Staleness check** — if the index is stale (git HEAD changed or uncommitted changes), triggers an incremental re-index before searching
+3. **Vector search** — embeds the query and runs L2-distance search against LanceDB
+4. **Context expansion** — follows the call graph around the best result up to `depth` levels, including callers, callees, and same-file entities
+5. **Formats output** — generates both TOON and JSON, calculates token savings, returns TOON
+
+## Error responses
+
+| Status | Condition |
+|--------|-----------|
+| `404` | Repository not indexed |
+| `409` | Repository not ready (status: cloning/indexing/error) |
+| `403` | API key doesn't have access to this repository |

@@ -1,0 +1,93 @@
+---
+title: "Supported agents"
+description: "AI coding agents and clients that work with Clean."
+---
+
+## Agent compatibility
+
+Clean works with any AI agent that supports the [Model Context Protocol](https://modelcontextprotocol.io) (MCP). There are two connection methods:
+
+| Transport | How it works | Best for |
+|-----------|-------------|----------|
+| **SSE** | Agent connects to `http://your-server/mcp/sse` over HTTP | Remote/cloud agents, multi-user setups |
+| **Stdio** | Agent spawns the `clean` CLI directly | Local development, single-user |
+
+## Tested agents
+
+| Agent | Transport | Configuration |
+|-------|-----------|---------------|
+| **Claude Code** | SSE | `~/.claude/settings.json` |
+| **Cursor** | SSE | `.cursor/mcp.json` |
+| **Windsurf** | SSE | MCP settings |
+| **Any MCP client** | SSE or stdio | See below |
+
+## Connection details
+
+### SSE (remote)
+
+The SSE endpoint is at `/mcp/sse`. Agents connect here to receive tool definitions and send tool calls:
+
+```
+GET  /mcp/sse          → SSE stream (tool definitions, responses)
+POST /mcp/messages/    → Tool call submissions
+```
+
+Both endpoints require `Authorization: Bearer YOUR_API_KEY` (unless running a dev build).
+
+### Stdio (local)
+
+Install Clean and run the MCP server directly:
+
+```bash
+pip install clean
+clean --repo owner/repo
+```
+
+The `clean` command starts an MCP server on stdin/stdout. Your agent spawns this process and communicates over the standard MCP stdio protocol.
+
+## Available tools
+
+Once connected, agents have access to:
+
+<AccordionGroup>
+  <Accordion title="search_code">
+    Semantic code search across an indexed repository. Searches by meaning, not exact text.
+
+    **Parameters:**
+    - `query` (required) — Natural language description of what you're looking for
+    - `repo` — Repository in `owner/repo` format (auto-detected if only one is indexed)
+    - `branch` — Git branch to search
+    - `cwd` — Agent's working directory (for auto-detecting repo and branch)
+    - `top_k` — Number of results (default: 5, max: 50)
+    - `depth` — Call graph expansion depth (default: 1, max: 3 via MCP, 5 via HTTP)
+  </Accordion>
+
+  <Accordion title="index_repo">
+    Index a GitHub repository for semantic search. Clones the repo, parses functions/classes, generates embeddings, and stores them.
+
+    **Parameters:**
+    - `repo` (required) — Repository in `owner/repo` format
+    - `branch` — Git branch to index (default: repo's default branch)
+    - `timeout` — Timeout in seconds (default: 600)
+  </Accordion>
+
+  <Accordion title="list_repos">
+    List all indexed repositories with their status and entity count. No parameters.
+  </Accordion>
+
+  <Accordion title="get_token_savings">
+    Show cumulative token savings from using compact output format vs raw JSON.
+
+    **Parameters:**
+    - `reset` — Reset all statistics (default: false)
+  </Accordion>
+</AccordionGroup>
+
+## Agent behavior
+
+Clean's `search_code` tool is designed to guide agents toward efficient usage:
+
+- Results include full source code — agents can answer directly without reading files
+- An "Additional matches" list shows other relevant functions by file and line
+- A footer reminds agents to check existing results before making follow-up searches
+- Auto-reindexing triggers when code changes are detected, so results are always fresh
