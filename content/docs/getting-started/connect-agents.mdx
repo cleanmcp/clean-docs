@@ -1,0 +1,29 @@
+---
+title: Connect Your Agents
+description: Select which coding agents to give access to Clean.
+---
+
+During installation, the CLI detects which agents you have installed and asks which ones to connect. Select all that apply.
+
+## Automatic setup (Claude Code, Antigravity, Codex)
+
+For most agents, the CLI writes the MCP config file automatically. No further steps needed — just restart your agent.
+
+## Manual step for Cursor
+
+Cursor requires you to paste the MCP config into its settings UI. See [Cursor setup](/docs/agents/cursor) for step-by-step instructions.
+
+## Agent-specific guides
+
+- [Claude Code](/docs/agents/claude)
+- [Cursor](/docs/agents/cursor)
+- [Antigravity](/docs/agents/antigravity)
+- [Codex](/docs/agents/codex)
+
+## Verifying the connection
+
+Ask your agent:
+
+> *"List the available MCP tools"*
+
+You should see `search_code`, `index_repo`, and `list_repos` in the response.

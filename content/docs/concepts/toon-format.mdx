@@ -1,0 +1,55 @@
+---
+title: TOON Format
+description: Token-Optimized Object Notation — Clean's compact response format.
+---
+
+TOON (Token-Optimized Object Notation) is the default response format for Clean's search results. It encodes the same data as JSON but uses 30–40% fewer tokens.
+
+## Why it matters
+
+AI agents have context windows. Every token spent on formatting is a token not spent on code. TOON removes JSON's verbose syntax — quotes, brackets, repeated keys — and replaces it with a compact tabular representation.
+
+## Example comparison
+
+**JSON (verbose):**
+```json
+{
+  "results": [
+    {
+      "name": "handle_payment",
+      "file": "src/payments.py",
+      "score": 0.93,
+      "line_start": 42,
+      "line_end": 67
+    }
+  ]
+}
+```
+
+**TOON (compact):**
+```
+name|file|score|lines
+handle_payment|src/payments.py|0.93|42-67
+```
+
+Same information, fewer tokens.
+
+## Token savings tracking
+
+Clean tracks cumulative savings per session:
+
+- Total searches performed
+- Estimated characters saved
+- Estimated token savings
+- Estimated cost savings
+
+This is reported in the MCP response metadata so your agent (or you) can see the running total.
+
+## Switching to JSON
+
+If you prefer JSON for debugging or tooling compatibility, pass `format=json` in your API request:
+
+```bash
+curl "http://localhost:8000/search?q=auth&repo=owner/repo&format=json" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```

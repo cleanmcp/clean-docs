@@ -1,0 +1,31 @@
+---
+title: Agent Overview
+description: Clean works with Claude Code, Cursor, Antigravity, and Codex via MCP.
+---
+
+Clean connects to AI coding agents through the [Model Context Protocol (MCP)](https://modelcontextprotocol.io) — an open standard for giving AI tools structured access to external services.
+
+Once connected, your agent gains three tools:
+
+| Tool | Description |
+|------|-------------|
+| `search_code` | Semantic search across indexed repos |
+| `index_repo` | Trigger indexing for a repository |
+| `list_repos` | List all indexed repositories |
+
+## Supported agents
+
+| Agent | Setup | Config location |
+|-------|-------|----------------|
+| [Claude Code](/docs/agents/claude) | Automatic | `~/.claude.json` |
+| [Cursor](/docs/agents/cursor) | Manual paste required | `~/.cursor/mcp.json` |
+| [Antigravity](/docs/agents/antigravity) | Automatic | `~/.gemini/antigravity/mcp_config.json` |
+| [Codex](/docs/agents/codex) | Automatic | `~/.codex/config.toml` |
+
+## Reconnecting
+
+To re-run the MCP config step without reinstalling:
+
+```bash
+npx @tryclean/create connect
+```

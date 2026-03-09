@@ -1,0 +1,67 @@
+---
+title: Quickstart
+description: From zero to semantic code search in 5 minutes.
+---
+
+## Overview
+
+Here's the full pipeline:
+
+1. Sign up at [tryclean.ai](https://tryclean.ai)
+2. Grab your API key from the dashboard
+3. Run `npx @tryclean/create` — the CLI sets everything up
+4. Enter your API key when prompted
+5. Select which coding agents to connect (Claude, Cursor, Antigravity, Codex)
+6. *(Cursor only)* Paste the generated MCP config into Cursor's settings
+7. Start chatting — your agent can now search your codebase semantically
+
+---
+
+## Step 1 — Sign up
+
+Go to [tryclean.ai](https://tryclean.ai) and create an account.
+
+## Step 2 — Get your API key
+
+After signing in, open the dashboard and copy your API key. It looks like `clean_sk_...`.
+
+## Step 3 — Run the installer
+
+```bash
+npx @tryclean/create
+```
+
+The interactive CLI will guide you through setup — provisioning your Clean instance, generating config files, and writing MCP configs to your agent's settings directory.
+
+## Step 4 — Enter your API key
+
+When the CLI asks for your API key, paste the `clean_sk_...` key you copied from the dashboard.
+
+## Step 5 — Select your agents
+
+The CLI will detect which agents are installed and let you pick which ones to connect:
+
+- **Claude Code** — config written automatically to `~/.claude.json`
+- **Cursor** — config written to `~/.cursor/mcp.json`, but you need to paste it into Cursor's MCP settings (see [Cursor setup](/docs/agents/cursor))
+- **Antigravity** — config written to `~/.gemini/antigravity/mcp_config.json`
+- **Codex** — config written to `~/.codex/config.toml`
+
+## Step 6 — (Cursor only) Paste the MCP config
+
+Cursor requires you to manually add the MCP server in its settings UI. See [Cursor setup](/docs/agents/cursor) for the exact steps.
+
+## Step 7 — Try it
+
+Ask your agent:
+
+> *"Search for the authentication logic"*
+
+The agent will call `search_code` through MCP and return semantically matched functions with their full call graph context.
+
+---
+
+## What's next
+
+- [Invite your team](/docs/team/invite)
+- [Understand how Clean works](/docs/concepts/how-it-works)
+- [Browse the API reference](/docs/api-reference/overview)

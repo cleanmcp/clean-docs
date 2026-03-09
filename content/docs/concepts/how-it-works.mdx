@@ -1,0 +1,66 @@
+---
+title: How It Works
+description: The indexing pipeline, data model, and search architecture behind Clean.
+---
+
+## Indexing pipeline
+
+When you index a repository, Clean runs through five phases:
+
+### 1. Scan
+
+Clean walks the repository file tree, skipping `node_modules`, `.git`, build artifacts, and binary files. It processes `.py`, `.js`, `.jsx`, `.mjs`, `.cjs`, `.ts`, and `.tsx` files.
+
+### 2. Parse
+
+Each file is parsed with [tree-sitter](https://tree-sitter.github.io/tree-sitter/) to extract code entities — functions, methods, and classes — along with their line ranges and call sites.
+
+### 3. Embed
+
+Every entity is embedded using `all-MiniLM-L6-v2`, a lightweight 384-dimensional sentence embedding model that runs fully on CPU. No API calls, no data leaves your machine.
+
+### 4. Store
+
+Embeddings are stored in [LanceDB](https://lancedb.com/) for vector search. Metadata (file paths, line ranges, call references) goes into SQLite.
+
+### 5. Build call graph
+
+Clean builds a bidirectional call graph: for each function, it records which functions it calls (callees) and which functions call it (callers). This is computed once at index time.
+
+---
+
+## Search
+
+When your agent calls `search_code`:
+
+1. The query is embedded with the same `all-MiniLM-L6-v2` model
+2. LanceDB performs an approximate nearest-neighbor search (L2 distance)
+3. Top results are expanded with call graph context — callers, callees, and sibling functions in the same file, up to 5 hops deep
+
+### Staleness detection
+
+Before every search, Clean checks whether the repository HEAD has changed or there are uncommitted changes. If so, it re-indexes automatically before returning results.
+
+---
+
+## Data model
+
+Each code entity has:
+
+| Field | Description |
+|-------|-------------|
+| `name` | Function or class name |
+| `file_path` | Relative path in the repo |
+| `code` | Full source text |
+| `line_start` / `line_end` | Line range |
+| `calls` | List of function names this entity calls |
+| `called_by` | List of function names that call this entity |
+| `embedding` | 384-dim float vector |
+
+---
+
+## Self-hosted
+
+Everything — the embedding model, vector index, call graph, and API — runs on your own infrastructure. Clean never sends your code to external services.
+
+Data is stored in `~/.clean/` by default, configurable via the `CLEAN_DATA_DIR` environment variable.

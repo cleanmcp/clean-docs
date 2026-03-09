@@ -1,10 +1,19 @@
+# Next.js
+.next/
+out/
+
 # Dependencies
 node_modules/
 
-# Docusaurus build output
-docusaurus/.docusaurus/
-docusaurus/build/
+# Fumadocs generated source
+.source/
+
+# Environment
+.env
+.env.local
+.env*.local
 
 # Misc
 .DS_Store
 *.log
+Thumbs.db

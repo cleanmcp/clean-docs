@@ -1,0 +1,76 @@
+---
+title: Repositories
+description: Index and manage repositories.
+---
+
+## `POST /repos/index`
+
+Trigger indexing for a repository. Clean will clone (or pull) the repo, parse all supported files, embed them, and build the call graph.
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `repo` | string | ✓ | Repository in `owner/repo` format |
+
+### Example
+
+```bash
+curl -X POST "http://localhost:8000/repos/index?repo=acme/api" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+### Response
+
+```json
+{
+  "status": "indexing",
+  "repo": "acme/api",
+  "job_id": "job_abc123"
+}
+```
+
+Indexing is asynchronous. Poll `/repos/{owner}/{repo}/status` to check progress.
+
+---
+
+## `GET /repos`
+
+List all indexed repositories.
+
+```bash
+curl "http://localhost:8000/repos" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+---
+
+## `GET /repos/{owner}/{repo}/status`
+
+Check the indexing status of a specific repository.
+
+```bash
+curl "http://localhost:8000/repos/acme/api/status" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+### Response
+
+```json
+{
+  "repo": "acme/api",
+  "status": "ready",
+  "entities": 1842,
+  "last_indexed": "2026-03-08T12:00:00Z",
+  "head": "a3f9b2c"
+}
+```
+
+### Status values
+
+| Status | Meaning |
+|--------|---------|
+| `indexing` | Currently being indexed |
+| `ready` | Index is up to date |
+| `stale` | Repo has changed, will re-index on next search |
+| `error` | Indexing failed |

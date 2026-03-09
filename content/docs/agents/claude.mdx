@@ -1,0 +1,46 @@
+---
+title: Claude Code
+description: Connect Clean to Claude Code via MCP.
+---
+
+The installer writes the MCP config to `~/.claude.json` automatically. Claude Code uses the **Streamable HTTP** transport (`/mcp` endpoint).
+
+## Manual setup
+
+If you need to configure manually, add this to `~/.claude.json`:
+
+```json
+{
+  "mcpServers": {
+    "clean": {
+      "type": "http",
+      "url": "http://localhost:8000/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+Replace `YOUR_API_KEY` with your `clean_sk_...` key.
+
+## Verify
+
+In a Claude Code session:
+
+```
+> List MCP tools
+```
+
+You should see `search_code`, `index_repo`, and `list_repos`.
+
+## Using Clean in Claude Code
+
+Just describe what you're looking for:
+
+> *"Find the rate limiting middleware"*
+> *"Show me how authentication is handled"*
+> *"Search for the payment webhook handler"*
+
+Claude Code will call `search_code` automatically and return semantically matched functions with call graph context.

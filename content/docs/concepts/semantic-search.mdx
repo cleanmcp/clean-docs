@@ -1,0 +1,43 @@
+---
+title: Semantic Search
+description: How Clean finds code by meaning rather than keywords.
+---
+
+Traditional code search matches text — if you search for `auth`, you get files containing that string. Clean searches by **meaning**.
+
+Ask for *"rate limiting logic"* and Clean finds your `RateLimiter` class, the middleware that calls it, and the handler that uses it — even if none of those contain the exact phrase "rate limiting".
+
+## How similarity works
+
+Clean uses cosine similarity between vector embeddings:
+
+| Score | Meaning |
+|-------|---------|
+| 0.90+ | Strong match — directly relevant |
+| 0.70–0.90 | Related — probably useful context |
+| < 0.70 | Weak — likely noise |
+
+Results are ranked by score. You get the top-k matches plus their call graph context.
+
+## Call graph expansion
+
+Raw vector search finds the most similar functions. Call graph expansion makes results actually useful by including:
+
+- **Callers** — what calls the matched function
+- **Callees** — what the matched function calls
+- **Siblings** — other functions in the same file
+
+This gives your agent the full picture of how a piece of code fits into the larger system, without requiring separate searches.
+
+## Example
+
+Query: *"payment webhook handler"*
+
+Clean might return:
+1. `handle_stripe_webhook` (score: 0.94) — direct match
+2. `verify_webhook_signature` (callee, score: 0.81) — called by the handler
+3. `process_payment_event` (callee, score: 0.79) — downstream processor
+4. `send_payment_confirmation` (callee, score: 0.72) — notification step
+5. `stripe_router` (caller, score: 0.65) — the router that dispatches to the handler
+
+Your agent gets a complete picture of the payment flow from a single search.

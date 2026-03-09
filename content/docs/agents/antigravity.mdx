@@ -1,0 +1,27 @@
+---
+title: Antigravity
+description: Connect Clean to Antigravity (Google's AI coding agent).
+---
+
+The installer writes the MCP config to `~/.gemini/antigravity/mcp_config.json` automatically.
+
+## Manual setup
+
+```json
+{
+  "mcpServers": {
+    "clean": {
+      "serverUrl": "http://localhost:8000/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+Antigravity uses Streamable HTTP transport (no `type` field needed — it uses `serverUrl` instead of `url`).
+
+## Verify
+
+Ask Antigravity to list its available tools. You should see `search_code`, `index_repo`, and `list_repos`.

@@ -1,0 +1,57 @@
+---
+title: Install Clean
+description: Run the installer CLI to set up your Clean instance.
+---
+
+Run the installer from any directory:
+
+```bash
+npx @tryclean/create
+```
+
+The CLI will walk you through:
+
+1. **Preflight checks** — verifies Docker is running and the environment is ready
+2. **License key** — enter your API key (`clean_sk_...`) from the dashboard
+3. **Networking** — provisions your org token
+4. **Config generation** — creates `.env` and `docker-compose.yml` in a `./clean/` directory
+5. **Container launch** — pulls images and starts the Clean server
+6. **Health checks** — confirms the server is reachable
+7. **MCP config** — writes agent config files (Claude, Cursor, etc.)
+
+## Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/) installed and running
+- Node.js 18+ (for `npx`)
+
+## What gets installed
+
+| File | Purpose |
+|------|---------|
+| `./clean/.env` | API keys and configuration |
+| `./clean/docker-compose.yml` | Container definitions |
+| `~/.claude.json` | Claude Code MCP config (if selected) |
+| `~/.cursor/mcp.json` | Cursor MCP config (if selected) |
+| `~/.gemini/antigravity/mcp_config.json` | Antigravity MCP config (if selected) |
+| `~/.codex/config.toml` | Codex MCP config (if selected) |
+
+## Reconnect later
+
+If you need to re-run the agent connection step without reinstalling:
+
+```bash
+npx @tryclean/create connect
+```
+
+## Other CLI commands
+
+```bash
+npx @tryclean/create status   # Check service health
+npx @tryclean/create update   # Pull latest images and restart
+npx @tryclean/create logs     # Tail container logs
+npx @tryclean/create backup   # Back up your vector data
+```
+
+## Next step
+
+[Connect your agents →](/docs/getting-started/connect-agents)
