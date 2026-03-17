@@ -5,8 +5,8 @@ export const baseOptions: BaseLayoutProps = {
   nav: {
     title: (
       <>
-        <Image src="/logo/dark.svg" alt="Clean" width={24} height={24} className="block dark:hidden" />
-        <Image src="/logo/light.svg" alt="Clean" width={24} height={24} className="hidden dark:block" />
+        <Image src="/logo-blue.png" alt="Clean" width={24} height={24} className="block dark:hidden" />
+        <Image src="/logo-blue.png" alt="Clean" width={24} height={24} className="hidden dark:block" />
         Clean
       </>
     ),
