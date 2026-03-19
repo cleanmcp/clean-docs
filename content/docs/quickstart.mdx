@@ -8,9 +8,9 @@ description: From zero to semantic code search in 5 minutes.
 Here's the full pipeline:
 
 1. Sign up at [tryclean.ai](https://tryclean.ai)
-2. Grab your API key from the dashboard
+2. Grab your license key from the dashboard
 3. Run `npx @tryclean/create` — the CLI sets everything up
-4. Enter your API key when prompted
+4. Enter your license key when prompted
 5. Select which coding agents to connect (Claude, Cursor, Antigravity, Codex)
 6. *(Cursor only)* Paste the generated MCP config into Cursor's settings
 7. Start chatting — your agent can now search your codebase semantically
@@ -21,9 +21,9 @@ Here's the full pipeline:
 
 Go to [tryclean.ai](https://tryclean.ai) and create an account.
 
-## Step 2 — Get your API key
+## Step 2 — Get your license key
 
-After signing in, open the dashboard and copy your API key. It looks like `clean_sk_...`.
+After signing in, open the dashboard and copy your license key. It looks like `eyJ...` (a JWT) or `CLEAN-XXXX-...` (an activation code).
 
 ## Step 3 — Run the installer
 
@@ -33,9 +33,9 @@ npx @tryclean/create
 
 The interactive CLI will guide you through setup — provisioning your Clean instance, generating config files, and writing MCP configs to your agent's settings directory.
 
-## Step 4 — Enter your API key
+## Step 4 — Enter your license key
 
-When the CLI asks for your API key, paste the `clean_sk_...` key you copied from the dashboard.
+When the CLI asks for your license key, paste the `eyJ...` or `CLEAN-XXXX-...` key you copied from the dashboard.
 
 ## Step 5 — Select your agents
 
@@ -43,7 +43,7 @@ The CLI will detect which agents are installed and let you pick which ones to co
 
 - **Claude Code** — config written automatically to `~/.claude.json`
 - **Cursor** — config written to `~/.cursor/mcp.json`, but you need to paste it into Cursor's MCP settings (see [Cursor setup](/docs/agents/cursor))
-- **Antigravity** — config written to `~/.gemini/antigravity/mcp_config.json`
+- **Antigravity** — config written to `~/.gemini/settings.json`
 - **Codex** — config written to `~/.codex/config.toml`
 
 ## Step 6 — (Cursor only) Paste the MCP config
