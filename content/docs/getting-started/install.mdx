@@ -12,7 +12,7 @@ npx @tryclean/create
 The CLI will walk you through:
 
 1. **Preflight checks** — verifies Docker is running and the environment is ready
-2. **License key** — enter your API key (`clean_sk_...`) from the dashboard
+2. **License key** — enter your license key (`eyJ...` or `CLEAN-XXXX-...`) from the dashboard
 3. **Networking** — provisions your org token
 4. **Config generation** — creates `.env` and `docker-compose.yml` in a `./clean/` directory
 5. **Container launch** — pulls images and starts the Clean server
@@ -32,7 +32,7 @@ The CLI will walk you through:
 | `./clean/docker-compose.yml` | Container definitions |
 | `~/.claude.json` | Claude Code MCP config (if selected) |
 | `~/.cursor/mcp.json` | Cursor MCP config (if selected) |
-| `~/.gemini/antigravity/mcp_config.json` | Antigravity MCP config (if selected) |
+| `~/.gemini/settings.json` | Antigravity MCP config (if selected) |
 | `~/.codex/config.toml` | Codex MCP config (if selected) |
 
 ## Reconnect later
