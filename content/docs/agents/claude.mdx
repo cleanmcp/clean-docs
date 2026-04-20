@@ -3,27 +3,49 @@ title: Claude Code
 description: Connect Clean to Claude Code via MCP.
 ---
 
-The installer writes the MCP config to `~/.claude.json` automatically. Claude Code uses the **SSE** transport (`/mcp/sse` endpoint).
-
-## Manual setup
-
-If you need to configure manually, add this to `~/.claude.json`:
+Claude Code uses the **SSE** transport. Add the following to `~/.claude.json`:
 
 ```json
 {
   "mcpServers": {
     "clean": {
       "type": "sse",
-      "url": "http://localhost:8000/mcp/sse",
+      "url": "https://api.tryclean.ai/mcp/sse",
       "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
+        "Authorization": "Bearer YOUR_API_KEY",
+        "X-Clean-Slug": "your-org-slug"
       }
     }
   }
 }
 ```
 
-Replace `YOUR_API_KEY` with your `clean_sk_...` key.
+Replace `YOUR_API_KEY` with your `clean_sk_...` key and `your-org-slug` with your organization slug. Both are shown in the dashboard's MCP Config step.
+
+## Getting the config from the dashboard
+
+The easiest way is to copy the pre-filled config block directly from [tryclean.ai/dashboard/onboarding](https://tryclean.ai/dashboard/onboarding), the dashboard populates your API key and org slug automatically.
+
+You can also run the terminal command shown on the dashboard, which writes the config file for you.
+
+## Claude Desktop
+
+For Claude Desktop (not Claude Code CLI), use the stdio proxy instead:
+
+```json
+{
+  "mcpServers": {
+    "clean": {
+      "command": "npx",
+      "args": ["-y", "@tryclean/mcp-proxy"],
+      "env": {
+        "CLEAN_API_KEY": "YOUR_API_KEY",
+        "CLEAN_SLUG": "your-org-slug"
+      }
+    }
+  }
+}
+```
 
 ## Verify
 

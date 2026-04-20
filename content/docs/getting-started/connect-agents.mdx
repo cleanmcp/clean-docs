@@ -1,24 +1,35 @@
 ---
 title: Connect Your Agents
-description: Select which coding agents to give access to Clean.
+description: Add the Clean MCP config to your coding agent.
 ---
 
-During installation, the CLI detects which agents you have installed and asks which ones to connect. Select all that apply.
+Once your repos are indexed, the dashboard's MCP Config step shows the exact snippet to add to your agent. Select the tab for your agent and copy the config.
 
-## Automatic setup (Claude Code, Antigravity, Codex)
+## Getting the config
 
-For most agents, the CLI writes the MCP config file automatically. No further steps needed — just restart your agent.
+Go to [tryclean.ai/dashboard/onboarding](https://tryclean.ai/dashboard/onboarding) and skip to the **MCP Config** step, or go to [Dashboard → API Keys](https://tryclean.ai/dashboard/keys) to generate a new key and see the config.
 
-## Manual step for Cursor
+The config connects your agent to Clean's cloud endpoint:
 
-Cursor requires you to paste the MCP config into its settings UI. See [Cursor setup](/docs/agents/cursor) for step-by-step instructions.
+```
+https://api.tryclean.ai/mcp/sse
+```
+
+Two headers are required:
+
+| Header | Value |
+|--------|-------|
+| `Authorization` | `Bearer clean_sk_...` |
+| `X-Clean-Slug` | Your organization slug |
+
+Both are included automatically in the config shown on the dashboard.
 
 ## Agent-specific guides
 
-- [Claude Code](/docs/agents/claude)
-- [Cursor](/docs/agents/cursor)
-- [Antigravity](/docs/agents/antigravity)
-- [Codex](/docs/agents/codex)
+- [Claude Code](/agents/claude)
+- [Cursor](/agents/cursor)
+- [Antigravity](/agents/antigravity)
+- [Codex](/agents/codex)
 
 ## Verifying the connection
 

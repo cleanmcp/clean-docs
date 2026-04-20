@@ -1,57 +1,41 @@
 ---
-title: Install Clean
-description: Run the installer CLI to set up your Clean instance.
+title: Set Up Clean
+description: Connect your repos and get Clean running through the dashboard.
 ---
 
-Run the installer from any directory:
+After signing up, the dashboard walks you through a four-step onboarding flow. You can access it at any time from [tryclean.ai/dashboard/onboarding](https://tryclean.ai/dashboard/onboarding).
 
-```bash
-npx @tryclean/create
-```
+## Step 1: Install the GitHub App
 
-The CLI will walk you through:
+Click **Install GitHub App** to grant Clean read-only access to your repositories. You choose exactly which repos to share. Clean never writes to or modifies your code.
 
-1. **Preflight checks** — verifies Docker is running and the environment is ready
-2. **License key** — enter your license key (`eyJ...` or `CLEAN-XXXX-...`) from the dashboard
-3. **Networking** — provisions your org token
-4. **Config generation** — creates `.env` and `docker-compose.yml` in a `./clean/` directory
-5. **Container launch** — pulls images and starts the Clean server
-6. **Health checks** — confirms the server is reachable
-7. **MCP config** — writes agent config files (Claude, Cursor, etc.)
+Once you complete the GitHub authorization, the page updates automatically.
 
-## Prerequisites
+## Step 2: Select repos to index
 
-- [Docker](https://docs.docker.com/get-docker/) installed and running
-- Node.js 18+ (for `npx`)
+Choose the repositories you want Clean to search. The number of repos you can index depends on your plan:
 
-## What gets installed
+| Plan | Repos |
+|------|-------|
+| Free | 3 |
+| Pro | 15 |
+| Max / Enterprise | Unlimited |
 
-| File | Purpose |
-|------|---------|
-| `./clean/.env` | API keys and configuration |
-| `./clean/docker-compose.yml` | Container definitions |
-| `~/.claude.json` | Claude Code MCP config (if selected) |
-| `~/.cursor/mcp.json` | Cursor MCP config (if selected) |
-| `~/.gemini/settings.json` | Antigravity MCP config (if selected) |
-| `~/.codex/config.toml` | Codex MCP config (if selected) |
+## Step 3: Wait for indexing
 
-## Reconnect later
+Clean clones your repos, parses them with tree-sitter, and embeds every function and class. This typically takes 1-5 minutes per repo depending on size.
 
-If you need to re-run the agent connection step without reinstalling:
+You'll see live progress in the dashboard. Once all repos show **Done**, you'll move to the next step automatically.
 
-```bash
-npx @tryclean/create connect
-```
+## Step 4: Copy your MCP config
 
-## Other CLI commands
+The dashboard shows a ready-to-use config block for your agent. Select your agent from the tabs (Claude Code, Cursor, Claude Desktop, Antigravity, Codex) and either:
 
-```bash
-npx @tryclean/create status   # Check service health
-npx @tryclean/create update   # Pull latest images and restart
-npx @tryclean/create logs     # Tail container logs
-npx @tryclean/create backup   # Back up your vector data
-```
+- **Run the terminal command**: pastes the config into the right file for you (recommended)
+- **Copy the JSON/TOML config**: add it manually if you have other MCP servers to preserve
+
+Your API key is included in the config automatically.
 
 ## Next step
 
-[Connect your agents →](/docs/getting-started/connect-agents)
+[Connect your agents →](/getting-started/connect-agents)

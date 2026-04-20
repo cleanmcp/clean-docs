@@ -1,54 +1,47 @@
 ---
 title: Cursor
-description: Connect Clean to Cursor — requires a manual paste into Cursor's MCP settings.
+description: Connect Clean to Cursor via MCP.
 ---
 
-Cursor uses **SSE transport** and requires you to add the MCP server through its settings UI. The installer generates the config, but you need to paste it in manually.
-
-## Step 1 — Run the installer
-
-```bash
-npx @tryclean/create
-```
-
-Select **Cursor** when asked which agents to configure. The CLI will print the config block you need.
-
-## Step 2 — Open Cursor MCP settings
-
-In Cursor, go to:
-
-**Settings → Features → MCP Servers → Add Server**
-
-Or open the MCP settings file directly at `~/.cursor/mcp.json`.
-
-## Step 3 — Paste the config
-
-The config the CLI generates looks like this:
+Cursor uses **SSE transport**. Add the following to `~/.cursor/mcp.json`:
 
 ```json
 {
   "mcpServers": {
     "clean": {
       "type": "sse",
-      "url": "http://localhost:8000/mcp/sse",
+      "url": "https://api.tryclean.ai/mcp/sse",
       "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
+        "Authorization": "Bearer YOUR_API_KEY",
+        "X-Clean-Slug": "your-org-slug"
       }
     }
   }
 }
 ```
 
-If you're editing `~/.cursor/mcp.json` directly, merge the `clean` entry into the existing `mcpServers` object (don't replace the whole file if you have other servers).
+Replace `YOUR_API_KEY` with your `clean_sk_...` key and `your-org-slug` with your organization slug.
 
-## Step 4 — Restart Cursor
+## Getting the config from the dashboard
+
+Go to [tryclean.ai/dashboard/onboarding](https://tryclean.ai/dashboard/onboarding), open the **MCP Config** step, and select the **Cursor** tab. The dashboard generates the config with your key and slug pre-filled.
+
+You can either:
+- **Run the terminal command**: writes the config to `~/.cursor/mcp.json` automatically
+- **Copy the JSON**: merge the `clean` entry into your existing `~/.cursor/mcp.json` manually
+
+If you're editing the file manually, merge the `clean` entry into the existing `mcpServers` object rather than replacing the whole file.
+
+## Open Cursor MCP settings
+
+Alternatively, paste the config through Cursor's UI:
+
+**Settings > Features > MCP Servers > Add Server**
+
+## Restart Cursor
 
 Restart Cursor completely for the MCP server to be detected.
 
 ## Verify
 
-Open Cursor's MCP panel — you should see **clean** listed as a connected server with the `search_code`, `index_repo`, and `list_repos` tools.
-
-## Dashboard onboarding
-
-If you signed up via the dashboard, the onboarding flow at `/dashboard/onboarding` shows the exact config block for your instance — copy it from there.
+Open Cursor's MCP panel. You should see **clean** listed as a connected server with the `search_code`, `index_repo`, and `list_repos` tools.

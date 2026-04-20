@@ -8,49 +8,33 @@ description: From zero to semantic code search in 5 minutes.
 Here's the full pipeline:
 
 1. Sign up at [tryclean.ai](https://tryclean.ai)
-2. Grab your license key from the dashboard
-3. Run `npx @tryclean/create` — the CLI sets everything up
-4. Enter your license key when prompted
-5. Select which coding agents to connect (Claude, Cursor, Antigravity, Codex)
-6. *(Cursor only)* Paste the generated MCP config into Cursor's settings
-7. Start chatting — your agent can now search your codebase semantically
+2. Connect your GitHub repos through the dashboard
+3. Wait for indexing (1-5 minutes per repo)
+4. Copy your MCP config and paste it into your agent
+5. Start chatting. Your agent can now search your codebase semantically.
 
----
+## Step 1: Sign up
 
-## Step 1 — Sign up
+Go to [tryclean.ai](https://tryclean.ai) and create an account. You'll land on the dashboard.
 
-Go to [tryclean.ai](https://tryclean.ai) and create an account.
+## Step 2: Connect GitHub and select repos
 
-## Step 2 — Get your license key
+From the dashboard, click **Get Started** to open the onboarding flow:
 
-After signing in, open the dashboard and copy your license key. It looks like `eyJ...` (a JWT) or `CLEAN-XXXX-...` (an activation code).
+1. **Install the GitHub App**: grants Clean read-only access to your repos (you choose exactly which ones)
+2. **Select repos to index**: pick up to 3 repos on the free plan
+3. **Wait for indexing**: takes 1-5 minutes depending on repo size
 
-## Step 3 — Run the installer
+## Step 3: Copy your MCP config
 
-```bash
-npx @tryclean/create
-```
+Once indexing is done, the dashboard shows your MCP configuration. Select your agent (Claude Code, Cursor, Antigravity, etc.) and either:
 
-The interactive CLI will guide you through setup — provisioning your Clean instance, generating config files, and writing MCP configs to your agent's settings directory.
+- **Run the terminal command** (recommended): one-liner that writes the config for you
+- **Copy the JSON/TOML config**: paste it manually into your agent's config file
 
-## Step 4 — Enter your license key
+Your API key is auto-generated and included in the config.
 
-When the CLI asks for your license key, paste the `eyJ...` or `CLEAN-XXXX-...` key you copied from the dashboard.
-
-## Step 5 — Select your agents
-
-The CLI will detect which agents are installed and let you pick which ones to connect:
-
-- **Claude Code** — config written automatically to `~/.claude.json`
-- **Cursor** — config written to `~/.cursor/mcp.json`, but you need to paste it into Cursor's MCP settings (see [Cursor setup](/docs/agents/cursor))
-- **Antigravity** — config written to `~/.gemini/settings.json`
-- **Codex** — config written to `~/.codex/config.toml`
-
-## Step 6 — (Cursor only) Paste the MCP config
-
-Cursor requires you to manually add the MCP server in its settings UI. See [Cursor setup](/docs/agents/cursor) for the exact steps.
-
-## Step 7 — Try it
+## Step 4: Try it
 
 Ask your agent:
 
@@ -58,10 +42,14 @@ Ask your agent:
 
 The agent will call `search_code` through MCP and return semantically matched functions with their full call graph context.
 
----
+## Agent setup guides
+
+- [Claude Code](/agents/claude)
+- [Cursor](/agents/cursor)
+- [Claude Desktop](/agents/claude)
+- [Antigravity](/agents/antigravity)
+- [Codex](/agents/codex)
 
 ## What's next
 
-- [Invite your team](/docs/team/invite)
-- [Understand how Clean works](/docs/concepts/how-it-works)
-- [Browse the API reference](/docs/api-reference/overview)
+- [Invite your team](/team/invite)

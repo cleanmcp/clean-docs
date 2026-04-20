@@ -3,24 +3,27 @@ title: Antigravity
 description: Connect Clean to Antigravity (Google's AI coding agent).
 ---
 
-The installer writes the MCP config to `~/.gemini/settings.json` automatically.
-
-## Manual setup
+Add the following to `~/.gemini/antigravity/mcp_config.json`:
 
 ```json
 {
   "mcpServers": {
     "clean": {
-      "url": "http://localhost:8000/mcp/sse",
+      "serverUrl": "https://api.tryclean.ai/mcp",
       "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
+        "Authorization": "Bearer YOUR_API_KEY",
+        "X-Clean-Slug": "your-org-slug"
       }
     }
   }
 }
 ```
 
-Antigravity uses SSE transport via the `url` field.
+Replace `YOUR_API_KEY` with your `clean_sk_...` key and `your-org-slug` with your organization slug.
+
+## Getting the config from the dashboard
+
+Go to [tryclean.ai/dashboard/onboarding](https://tryclean.ai/dashboard/onboarding), open the **MCP Config** step, and select the **Antigravity** tab. The dashboard generates the config with your credentials pre-filled.
 
 ## Verify
 

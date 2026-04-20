@@ -1,9 +1,9 @@
 ---
 title: Agent Overview
-description: Clean works with Claude Code, Cursor, Antigravity, and Codex via MCP.
+description: Clean works with Claude Code, Cursor, Claude Desktop, Antigravity, and Codex via MCP.
 ---
 
-Clean connects to AI coding agents through the [Model Context Protocol (MCP)](https://modelcontextprotocol.io) — an open standard for giving AI tools structured access to external services.
+Clean connects to AI coding agents through the [Model Context Protocol (MCP)](https://modelcontextprotocol.io), an open standard for giving AI tools structured access to external services.
 
 Once connected, your agent gains three tools:
 
@@ -15,17 +15,14 @@ Once connected, your agent gains three tools:
 
 ## Supported agents
 
-| Agent | Setup | Config location |
-|-------|-------|----------------|
-| [Claude Code](/docs/agents/claude) | Automatic | `~/.claude.json` |
-| [Cursor](/docs/agents/cursor) | Manual paste required | `~/.cursor/mcp.json` |
-| [Antigravity](/docs/agents/antigravity) | Automatic | `~/.gemini/antigravity/mcp_config.json` |
-| [Codex](/docs/agents/codex) | Automatic | `~/.codex/config.toml` |
+| Agent | Transport | Config location |
+|-------|-----------|----------------|
+| [Claude Code](/agents/claude) | SSE | `~/.claude.json` |
+| [Cursor](/agents/cursor) | SSE | `~/.cursor/mcp.json` |
+| [Claude Desktop](/agents/claude) | stdio proxy | Claude Desktop config |
+| [Antigravity](/agents/antigravity) | SSE | `~/.gemini/antigravity/mcp_config.json` |
+| [Codex](/agents/codex) | HTTP | `~/.codex/config.toml` |
 
-## Reconnecting
+## Getting your config
 
-To re-run the MCP config step without reinstalling:
-
-```bash
-npx @tryclean/create connect
-```
+The dashboard generates the correct config block for each agent. Go to [tryclean.ai/dashboard/onboarding](https://tryclean.ai/dashboard/onboarding) and open the **MCP Config** step, or visit [Dashboard → API Keys](https://tryclean.ai/dashboard/keys) to get a config with a specific key.

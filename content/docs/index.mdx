@@ -1,19 +1,19 @@
 ---
 title: What is Clean?
-description: Persistent codebase memory for AI coding agents — semantic code search with call graph context.
+description: Persistent codebase memory for AI coding agents, semantic code search with call graph context.
 ---
 
-Clean is a self-hosted MCP server that gives your AI coding agent persistent, semantic memory of your codebase.
+Clean is a cloud-hosted MCP server that gives your AI coding agent persistent, semantic memory of your codebase.
 
-Instead of pasting files into context or hoping your agent guesses the right filename, Clean lets it search by **intent** — finding authentication logic, payment flows, or error handlers across your entire repo in milliseconds.
+Instead of pasting files into context or hoping your agent guesses the right filename, Clean lets it search by **intent**. Find authentication logic, payment flows, or error handlers across your entire repo in milliseconds.
 
 ## How it works
 
-1. **Index** — Clean scans your repos, parses Python/JS/TS with tree-sitter, and embeds every function and class using a local model. No API calls. Code never leaves your machine.
+1. **Index** - Connect your GitHub repos through the dashboard. Clean parses Python/JS/TS with tree-sitter and embeds every function and class. Your code is processed securely in the cloud.
 
-2. **Search** — Your agent calls `search_code` via MCP. Clean finds semantically similar code and expands results with the full call graph — callers, callees, and related functions up to 5 hops deep.
+2. **Search** - Your agent calls `search_code` via MCP. Clean finds semantically similar code and expands results with the full call graph (callers, callees, and related functions up to 5 hops deep).
 
-3. **Context** — Results come back in TOON format, 30–40% fewer tokens than JSON so your agent can fit more context per request.
+3. **Context** - Results come back in TOON format, 30-40% fewer tokens than JSON so your agent can fit more context per request.
 
 ## Supported agents
 
@@ -21,14 +21,14 @@ Instead of pasting files into context or hoping your agent guesses the right fil
 |-------|--------|
 | Claude Code | ✓ |
 | Cursor | ✓ |
+| Claude Desktop | ✓ |
 | Antigravity | ✓ |
 | Codex | ✓ |
 
 ## Get started
 
-Follow the [Quickstart](/docs/quickstart) to be up and running in 5 minutes, or jump straight to the step-by-step guide:
+Follow the [Quickstart](/quickstart) to be up and running in 5 minutes, or jump straight to the step-by-step guide:
 
-- [Sign up](/docs/getting-started/sign-up)
-- [Get your API key](/docs/getting-started/api-key)
-- [Install Clean](/docs/getting-started/install)
-- [Connect your agents](/docs/getting-started/connect-agents)
+- [Sign up](/getting-started/sign-up)
+- [Set up Clean](/getting-started/install)
+- [Connect your agents](/getting-started/connect-agents)
